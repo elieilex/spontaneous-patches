@@ -921,38 +921,34 @@
         bounds_group.addLayer(layer_Patches_12);
         map.addLayer(layer_Patches_12);
         function pop_Actions_13(feature, layer) {
-            var popupContent = '<table>\
-                    <tr>\
-                        <th scope="row">OCCURENCE</th>\
-                        <td>' + (feature.properties['ACTION NUMBER'] !== null ? autolinker.link(feature.properties['ACTION NUMBER'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">ACTION</th>\
-                        <td>' + (feature.properties['ACTION'] !== null ? autolinker.link(feature.properties['ACTION'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">PHOTO</th>\
-                        <td>' + (feature.properties['PHOTO'] !== null ? '<img src="images/' + String(feature.properties['PHOTO']).replace(/[\\\/:]/g, '_').trim() + '" '+ 'class=popupImage' +'>' : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">DESCRIPTION</th>\
-                        <td>' + (feature.properties['DESCRIPTION'] !== null ? autolinker.link(feature.properties['DESCRIPTION'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">UPDATE</th>\
-                        <td>' + (feature.properties['UPDATE'] !== null ? autolinker.link(feature.properties['UPDATE'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">photo</th>\
-                        <td>' + (feature.properties['updated photo'] !== null ? '<img src="images/' + String(feature.properties['updated photo']).replace(/[\\\/:]/g, '_').trim() + '" '+ 'class=popupImage' +'>' : '') + '</td>\
-                    </tr>\
-                </table>';
-            layer.bindPopup(popupContent, {maxHeight: 400});
-            var popup = layer.getPopup();
-            var content = popup.getContent();
-            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
-            popup.setContent(updatedContent);
-        }
+  var popupContent = '<table>\
+      <tr>\
+        <th scope="row">OCCURENCE</th>\
+        <td>' + (feature.properties['ACTION NUMBER'] !== null ? autolinker.link(feature.properties['ACTION NUMBER'].toLocaleString()) : '') + '</td>\
+      </tr>\
+      <tr>\
+        <th scope="row">ACTION</th>\
+        <td>' + (feature.properties['ACTION'] !== null ? autolinker.link(feature.properties['ACTION'].toLocaleString()) : '') + '</td>\
+      </tr>\
+      <tr>\
+        <th scope="row">PHOTO</th>\
+        <td>' + (((feature.properties['PHOTO'] !== null) && (feature.properties['PHOTO'] !== 'no'))  ? '<img src="images/' + String(feature.properties['PHOTO']).trim().substring(3) + '" '+ 'class=popupImage' +'>' : '') + '</td>\
+      </tr>\
+      <tr>\
+        <th scope="row">DESCRIPTION</th>\
+        <td>' + (feature.properties['DESCRIPTION'] !== null ? autolinker.link(feature.properties['DESCRIPTION'].toLocaleString()) : '') + '</td>\
+      </tr>\
+      <tr>\
+        <th scope="row">UPDATE</th>\
+        <td>' + (feature.properties['UPDATE'] !== null ? autolinker.link(feature.properties['UPDATE'].toLocaleString()) : '') + '</td>\
+      </tr>\
+      <tr>\
+        <th scope="row">photo</th>\
+        <td>' + (feature.properties['updated photo'] !== null ? '<img src="images/' + String(feature.properties['updated photo']).trim().substring(3) + '" '+ 'class=popupImage' +'>' : '') + '</td>\
+      </tr>\
+    </table>';
+  layer.bindPopup(popupContent, {maxHeight: 400});
+}
 
         function style_Actions_13_0(feature) {
             switch(String(feature.properties['ACTION'])) {
