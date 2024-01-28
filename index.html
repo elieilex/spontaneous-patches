@@ -1,0 +1,1194 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>spontaneous patches</title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet.wms.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="data/PublicgreenspaceGestel_2.js"></script>
+        <script src="data/PublicgreenspaceTongelre_3.js"></script>
+        <script src="data/PublicgreenspaceWoenselnoord_4.js"></script>
+        <script src="data/PublicgreenspaceWoenselzuid_5.js"></script>
+        <script src="data/PublicgreenspaceStrijp_6.js"></script>
+        <script src="data/PublicgreenspaceStratum_7.js"></script>
+        <script src="data/PublicgreenspaceCentrum_8.js"></script>
+        <script src="data/Dogwalkingareas_9.js"></script>
+        <script src="data/Playgrounds_10.js"></script>
+        <script src="data/Urbanareas_11.js"></script>
+        <script src="data/Patches_12.js"></script>
+        <script src="data/Actions_13.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[51.43656266349971,5.46431415784638],[51.44567990274334,5.4779591108160846]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        function removeEmptyRowsFromPopupContent(content, feature) {
+         var tempDiv = document.createElement('div');
+         tempDiv.innerHTML = content;
+         var rows = tempDiv.querySelectorAll('tr');
+         for (var i = 0; i < rows.length; i++) {
+             var td = rows[i].querySelector('td.visible-with-data');
+             var key = td ? td.id : '';
+             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                 rows[i].parentNode.removeChild(rows[i]);
+             }
+         }
+         return tempDiv.innerHTML;
+        }
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_Aerialphotos_0');
+        map.getPane('pane_Aerialphotos_0').style.zIndex = 400;
+        var layer_Aerialphotos_0 = L.WMS.layer("https://gisservice.eindhoven.nl/arcgis/services/LuchtfotoActueel/MapServer/WMSServer", "0", {
+            pane: 'pane_Aerialphotos_0',
+            format: 'image/svg xml',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_Aerialphotos_0);
+        map.createPane('pane_OpenStreetMapview_1');
+        map.getPane('pane_OpenStreetMapview_1').style.zIndex = 401;
+        var layer_OpenStreetMapview_1 = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_OpenStreetMapview_1',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_OpenStreetMapview_1;
+        function pop_PublicgreenspaceGestel_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">objectid</th>\
+                        <td>' + (feature.properties['objectid'] !== null ? autolinker.link(feature.properties['objectid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">buurt</th>\
+                        <td>' + (feature.properties['buurt'] !== null ? autolinker.link(feature.properties['buurt'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">eigenaar</th>\
+                        <td>' + (feature.properties['eigenaar'] !== null ? autolinker.link(feature.properties['eigenaar'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">beheerder</th>\
+                        <td>' + (feature.properties['beheerder'] !== null ? autolinker.link(feature.properties['beheerder'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">hoofd_categ</th>\
+                        <td>' + (feature.properties['hoofd_categ'] !== null ? autolinker.link(feature.properties['hoofd_categ'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">aanleg_jaar</th>\
+                        <td>' + (feature.properties['aanleg_jaar'] !== null ? autolinker.link(feature.properties['aanleg_jaar'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">techn_kwal</th>\
+                        <td>' + (feature.properties['techn_kwal'] !== null ? autolinker.link(feature.properties['techn_kwal'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">maatregel</th>\
+                        <td>' + (feature.properties['maatregel'] !== null ? autolinker.link(feature.properties['maatregel'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">oppervlakte</th>\
+                        <td>' + (feature.properties['oppervlakte'] !== null ? autolinker.link(feature.properties['oppervlakte'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_PublicgreenspaceGestel_2_0() {
+            return {
+                pane: 'pane_PublicgreenspaceGestel_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(93,236,81,0.8941176470588236)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_PublicgreenspaceGestel_2');
+        map.getPane('pane_PublicgreenspaceGestel_2').style.zIndex = 402;
+        map.getPane('pane_PublicgreenspaceGestel_2').style['mix-blend-mode'] = 'normal';
+        var layer_PublicgreenspaceGestel_2 = new L.geoJson(json_PublicgreenspaceGestel_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_PublicgreenspaceGestel_2',
+            layerName: 'layer_PublicgreenspaceGestel_2',
+            pane: 'pane_PublicgreenspaceGestel_2',
+            onEachFeature: pop_PublicgreenspaceGestel_2,
+            style: style_PublicgreenspaceGestel_2_0,
+        });
+        bounds_group.addLayer(layer_PublicgreenspaceGestel_2);
+        function pop_PublicgreenspaceTongelre_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">objectid</th>\
+                        <td>' + (feature.properties['objectid'] !== null ? autolinker.link(feature.properties['objectid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">buurt</th>\
+                        <td>' + (feature.properties['buurt'] !== null ? autolinker.link(feature.properties['buurt'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">eigenaar</th>\
+                        <td>' + (feature.properties['eigenaar'] !== null ? autolinker.link(feature.properties['eigenaar'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">beheerder</th>\
+                        <td>' + (feature.properties['beheerder'] !== null ? autolinker.link(feature.properties['beheerder'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">hoofd_categ</th>\
+                        <td>' + (feature.properties['hoofd_categ'] !== null ? autolinker.link(feature.properties['hoofd_categ'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">aanleg_jaar</th>\
+                        <td>' + (feature.properties['aanleg_jaar'] !== null ? autolinker.link(feature.properties['aanleg_jaar'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">techn_kwal</th>\
+                        <td>' + (feature.properties['techn_kwal'] !== null ? autolinker.link(feature.properties['techn_kwal'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">maatregel</th>\
+                        <td>' + (feature.properties['maatregel'] !== null ? autolinker.link(feature.properties['maatregel'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">oppervlakte</th>\
+                        <td>' + (feature.properties['oppervlakte'] !== null ? autolinker.link(feature.properties['oppervlakte'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_PublicgreenspaceTongelre_3_0() {
+            return {
+                pane: 'pane_PublicgreenspaceTongelre_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(93,236,81,0.8941176470588236)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_PublicgreenspaceTongelre_3');
+        map.getPane('pane_PublicgreenspaceTongelre_3').style.zIndex = 403;
+        map.getPane('pane_PublicgreenspaceTongelre_3').style['mix-blend-mode'] = 'normal';
+        var layer_PublicgreenspaceTongelre_3 = new L.geoJson(json_PublicgreenspaceTongelre_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_PublicgreenspaceTongelre_3',
+            layerName: 'layer_PublicgreenspaceTongelre_3',
+            pane: 'pane_PublicgreenspaceTongelre_3',
+            onEachFeature: pop_PublicgreenspaceTongelre_3,
+            style: style_PublicgreenspaceTongelre_3_0,
+        });
+        bounds_group.addLayer(layer_PublicgreenspaceTongelre_3);
+        function pop_PublicgreenspaceWoenselnoord_4(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">objectid</th>\
+                        <td>' + (feature.properties['objectid'] !== null ? autolinker.link(feature.properties['objectid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">buurt</th>\
+                        <td>' + (feature.properties['buurt'] !== null ? autolinker.link(feature.properties['buurt'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">eigenaar</th>\
+                        <td>' + (feature.properties['eigenaar'] !== null ? autolinker.link(feature.properties['eigenaar'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">beheerder</th>\
+                        <td>' + (feature.properties['beheerder'] !== null ? autolinker.link(feature.properties['beheerder'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">hoofd_categ</th>\
+                        <td>' + (feature.properties['hoofd_categ'] !== null ? autolinker.link(feature.properties['hoofd_categ'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">aanleg_jaar</th>\
+                        <td>' + (feature.properties['aanleg_jaar'] !== null ? autolinker.link(feature.properties['aanleg_jaar'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">techn_kwal</th>\
+                        <td>' + (feature.properties['techn_kwal'] !== null ? autolinker.link(feature.properties['techn_kwal'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">maatregel</th>\
+                        <td>' + (feature.properties['maatregel'] !== null ? autolinker.link(feature.properties['maatregel'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">oppervlakte</th>\
+                        <td>' + (feature.properties['oppervlakte'] !== null ? autolinker.link(feature.properties['oppervlakte'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_PublicgreenspaceWoenselnoord_4_0() {
+            return {
+                pane: 'pane_PublicgreenspaceWoenselnoord_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(93,236,81,0.8941176470588236)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_PublicgreenspaceWoenselnoord_4');
+        map.getPane('pane_PublicgreenspaceWoenselnoord_4').style.zIndex = 404;
+        map.getPane('pane_PublicgreenspaceWoenselnoord_4').style['mix-blend-mode'] = 'normal';
+        var layer_PublicgreenspaceWoenselnoord_4 = new L.geoJson(json_PublicgreenspaceWoenselnoord_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_PublicgreenspaceWoenselnoord_4',
+            layerName: 'layer_PublicgreenspaceWoenselnoord_4',
+            pane: 'pane_PublicgreenspaceWoenselnoord_4',
+            onEachFeature: pop_PublicgreenspaceWoenselnoord_4,
+            style: style_PublicgreenspaceWoenselnoord_4_0,
+        });
+        bounds_group.addLayer(layer_PublicgreenspaceWoenselnoord_4);
+        function pop_PublicgreenspaceWoenselzuid_5(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">objectid</th>\
+                        <td>' + (feature.properties['objectid'] !== null ? autolinker.link(feature.properties['objectid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">buurt</th>\
+                        <td>' + (feature.properties['buurt'] !== null ? autolinker.link(feature.properties['buurt'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">eigenaar</th>\
+                        <td>' + (feature.properties['eigenaar'] !== null ? autolinker.link(feature.properties['eigenaar'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">beheerder</th>\
+                        <td>' + (feature.properties['beheerder'] !== null ? autolinker.link(feature.properties['beheerder'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">hoofd_categ</th>\
+                        <td>' + (feature.properties['hoofd_categ'] !== null ? autolinker.link(feature.properties['hoofd_categ'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">aanleg_jaar</th>\
+                        <td>' + (feature.properties['aanleg_jaar'] !== null ? autolinker.link(feature.properties['aanleg_jaar'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">techn_kwal</th>\
+                        <td>' + (feature.properties['techn_kwal'] !== null ? autolinker.link(feature.properties['techn_kwal'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">maatregel</th>\
+                        <td>' + (feature.properties['maatregel'] !== null ? autolinker.link(feature.properties['maatregel'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">oppervlakte</th>\
+                        <td>' + (feature.properties['oppervlakte'] !== null ? autolinker.link(feature.properties['oppervlakte'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_PublicgreenspaceWoenselzuid_5_0() {
+            return {
+                pane: 'pane_PublicgreenspaceWoenselzuid_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(93,236,81,0.8941176470588236)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_PublicgreenspaceWoenselzuid_5');
+        map.getPane('pane_PublicgreenspaceWoenselzuid_5').style.zIndex = 405;
+        map.getPane('pane_PublicgreenspaceWoenselzuid_5').style['mix-blend-mode'] = 'normal';
+        var layer_PublicgreenspaceWoenselzuid_5 = new L.geoJson(json_PublicgreenspaceWoenselzuid_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_PublicgreenspaceWoenselzuid_5',
+            layerName: 'layer_PublicgreenspaceWoenselzuid_5',
+            pane: 'pane_PublicgreenspaceWoenselzuid_5',
+            onEachFeature: pop_PublicgreenspaceWoenselzuid_5,
+            style: style_PublicgreenspaceWoenselzuid_5_0,
+        });
+        bounds_group.addLayer(layer_PublicgreenspaceWoenselzuid_5);
+        function pop_PublicgreenspaceStrijp_6(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">objectid</th>\
+                        <td>' + (feature.properties['objectid'] !== null ? autolinker.link(feature.properties['objectid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">buurt</th>\
+                        <td>' + (feature.properties['buurt'] !== null ? autolinker.link(feature.properties['buurt'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">eigenaar</th>\
+                        <td>' + (feature.properties['eigenaar'] !== null ? autolinker.link(feature.properties['eigenaar'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">beheerder</th>\
+                        <td>' + (feature.properties['beheerder'] !== null ? autolinker.link(feature.properties['beheerder'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">hoofd_categ</th>\
+                        <td>' + (feature.properties['hoofd_categ'] !== null ? autolinker.link(feature.properties['hoofd_categ'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">aanleg_jaar</th>\
+                        <td>' + (feature.properties['aanleg_jaar'] !== null ? autolinker.link(feature.properties['aanleg_jaar'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">techn_kwal</th>\
+                        <td>' + (feature.properties['techn_kwal'] !== null ? autolinker.link(feature.properties['techn_kwal'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">maatregel</th>\
+                        <td>' + (feature.properties['maatregel'] !== null ? autolinker.link(feature.properties['maatregel'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">oppervlakte</th>\
+                        <td>' + (feature.properties['oppervlakte'] !== null ? autolinker.link(feature.properties['oppervlakte'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_PublicgreenspaceStrijp_6_0() {
+            return {
+                pane: 'pane_PublicgreenspaceStrijp_6',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(93,236,81,0.8941176470588236)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_PublicgreenspaceStrijp_6');
+        map.getPane('pane_PublicgreenspaceStrijp_6').style.zIndex = 406;
+        map.getPane('pane_PublicgreenspaceStrijp_6').style['mix-blend-mode'] = 'normal';
+        var layer_PublicgreenspaceStrijp_6 = new L.geoJson(json_PublicgreenspaceStrijp_6, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_PublicgreenspaceStrijp_6',
+            layerName: 'layer_PublicgreenspaceStrijp_6',
+            pane: 'pane_PublicgreenspaceStrijp_6',
+            onEachFeature: pop_PublicgreenspaceStrijp_6,
+            style: style_PublicgreenspaceStrijp_6_0,
+        });
+        bounds_group.addLayer(layer_PublicgreenspaceStrijp_6);
+        function pop_PublicgreenspaceStratum_7(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">objectid</th>\
+                        <td>' + (feature.properties['objectid'] !== null ? autolinker.link(feature.properties['objectid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">buurt</th>\
+                        <td>' + (feature.properties['buurt'] !== null ? autolinker.link(feature.properties['buurt'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">eigenaar</th>\
+                        <td>' + (feature.properties['eigenaar'] !== null ? autolinker.link(feature.properties['eigenaar'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">beheerder</th>\
+                        <td>' + (feature.properties['beheerder'] !== null ? autolinker.link(feature.properties['beheerder'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">hoofd_categ</th>\
+                        <td>' + (feature.properties['hoofd_categ'] !== null ? autolinker.link(feature.properties['hoofd_categ'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">aanleg_jaar</th>\
+                        <td>' + (feature.properties['aanleg_jaar'] !== null ? autolinker.link(feature.properties['aanleg_jaar'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">techn_kwal</th>\
+                        <td>' + (feature.properties['techn_kwal'] !== null ? autolinker.link(feature.properties['techn_kwal'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">maatregel</th>\
+                        <td>' + (feature.properties['maatregel'] !== null ? autolinker.link(feature.properties['maatregel'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">oppervlakte</th>\
+                        <td>' + (feature.properties['oppervlakte'] !== null ? autolinker.link(feature.properties['oppervlakte'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_PublicgreenspaceStratum_7_0() {
+            return {
+                pane: 'pane_PublicgreenspaceStratum_7',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(93,236,81,0.8941176470588236)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_PublicgreenspaceStratum_7');
+        map.getPane('pane_PublicgreenspaceStratum_7').style.zIndex = 407;
+        map.getPane('pane_PublicgreenspaceStratum_7').style['mix-blend-mode'] = 'normal';
+        var layer_PublicgreenspaceStratum_7 = new L.geoJson(json_PublicgreenspaceStratum_7, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_PublicgreenspaceStratum_7',
+            layerName: 'layer_PublicgreenspaceStratum_7',
+            pane: 'pane_PublicgreenspaceStratum_7',
+            onEachFeature: pop_PublicgreenspaceStratum_7,
+            style: style_PublicgreenspaceStratum_7_0,
+        });
+        bounds_group.addLayer(layer_PublicgreenspaceStratum_7);
+        function pop_PublicgreenspaceCentrum_8(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">objectid</th>\
+                        <td>' + (feature.properties['objectid'] !== null ? autolinker.link(feature.properties['objectid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">buurt</th>\
+                        <td>' + (feature.properties['buurt'] !== null ? autolinker.link(feature.properties['buurt'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">eigenaar</th>\
+                        <td>' + (feature.properties['eigenaar'] !== null ? autolinker.link(feature.properties['eigenaar'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">beheerder</th>\
+                        <td>' + (feature.properties['beheerder'] !== null ? autolinker.link(feature.properties['beheerder'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">hoofd_categ</th>\
+                        <td>' + (feature.properties['hoofd_categ'] !== null ? autolinker.link(feature.properties['hoofd_categ'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">aanleg_jaar</th>\
+                        <td>' + (feature.properties['aanleg_jaar'] !== null ? autolinker.link(feature.properties['aanleg_jaar'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">techn_kwal</th>\
+                        <td>' + (feature.properties['techn_kwal'] !== null ? autolinker.link(feature.properties['techn_kwal'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">maatregel</th>\
+                        <td>' + (feature.properties['maatregel'] !== null ? autolinker.link(feature.properties['maatregel'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">oppervlakte</th>\
+                        <td>' + (feature.properties['oppervlakte'] !== null ? autolinker.link(feature.properties['oppervlakte'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_PublicgreenspaceCentrum_8_0() {
+            return {
+                pane: 'pane_PublicgreenspaceCentrum_8',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(93,236,81,0.8941176470588236)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_PublicgreenspaceCentrum_8');
+        map.getPane('pane_PublicgreenspaceCentrum_8').style.zIndex = 408;
+        map.getPane('pane_PublicgreenspaceCentrum_8').style['mix-blend-mode'] = 'normal';
+        var layer_PublicgreenspaceCentrum_8 = new L.geoJson(json_PublicgreenspaceCentrum_8, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_PublicgreenspaceCentrum_8',
+            layerName: 'layer_PublicgreenspaceCentrum_8',
+            pane: 'pane_PublicgreenspaceCentrum_8',
+            onEachFeature: pop_PublicgreenspaceCentrum_8,
+            style: style_PublicgreenspaceCentrum_8_0,
+        });
+        bounds_group.addLayer(layer_PublicgreenspaceCentrum_8);
+        function pop_Dogwalkingareas_9(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['stadsdeel'] !== null ? autolinker.link(feature.properties['stadsdeel'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['buurt_code'] !== null ? autolinker.link(feature.properties['buurt_code'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['buurt'] !== null ? autolinker.link(feature.properties['buurt'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['straat'] !== null ? autolinker.link(feature.properties['straat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['eigenaar'] !== null ? autolinker.link(feature.properties['eigenaar'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['beheerder'] !== null ? autolinker.link(feature.properties['beheerder'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['hoofd_categ'] !== null ? autolinker.link(feature.properties['hoofd_categ'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['categorie'] !== null ? autolinker.link(feature.properties['categorie'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['aanleg_jaar'] !== null ? autolinker.link(feature.properties['aanleg_jaar'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['terrein_hel'] !== null ? autolinker.link(feature.properties['terrein_hel'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['streef_hoog'] !== null ? autolinker.link(feature.properties['streef_hoog'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['techn_kwal'] !== null ? autolinker.link(feature.properties['techn_kwal'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['maatregel'] !== null ? autolinker.link(feature.properties['maatregel'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['oppervlakte'] !== null ? autolinker.link(feature.properties['oppervlakte'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['shape_area'] !== null ? autolinker.link(feature.properties['shape_area'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['shape_len'] !== null ? autolinker.link(feature.properties['shape_len'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_Dogwalkingareas_9_0() {
+            return {
+                pane: 'pane_Dogwalkingareas_9',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,226,213,1.0)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_Dogwalkingareas_9');
+        map.getPane('pane_Dogwalkingareas_9').style.zIndex = 409;
+        map.getPane('pane_Dogwalkingareas_9').style['mix-blend-mode'] = 'normal';
+        var layer_Dogwalkingareas_9 = new L.geoJson(json_Dogwalkingareas_9, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Dogwalkingareas_9',
+            layerName: 'layer_Dogwalkingareas_9',
+            pane: 'pane_Dogwalkingareas_9',
+            onEachFeature: pop_Dogwalkingareas_9,
+            style: style_Dogwalkingareas_9_0,
+        });
+        bounds_group.addLayer(layer_Dogwalkingareas_9);
+        function pop_Playgrounds_10(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['stadsdeel'] !== null ? autolinker.link(feature.properties['stadsdeel'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['buurt'] !== null ? autolinker.link(feature.properties['buurt'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['straat'] !== null ? autolinker.link(feature.properties['straat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['locatie'] !== null ? autolinker.link(feature.properties['locatie'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['objectid'] !== null ? autolinker.link(feature.properties['objectid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['shape_area'] !== null ? autolinker.link(feature.properties['shape_area'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['shape_len'] !== null ? autolinker.link(feature.properties['shape_len'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_Playgrounds_10_0() {
+            return {
+                pane: 'pane_Playgrounds_10',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,253,213,1.0)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_Playgrounds_10');
+        map.getPane('pane_Playgrounds_10').style.zIndex = 410;
+        map.getPane('pane_Playgrounds_10').style['mix-blend-mode'] = 'normal';
+        var layer_Playgrounds_10 = new L.geoJson(json_Playgrounds_10, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Playgrounds_10',
+            layerName: 'layer_Playgrounds_10',
+            pane: 'pane_Playgrounds_10',
+            onEachFeature: pop_Playgrounds_10,
+            style: style_Playgrounds_10_0,
+        });
+        bounds_group.addLayer(layer_Playgrounds_10);
+        function pop_Urbanareas_11(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_Urbanareas_11_0() {
+            return {
+                pane: 'pane_Urbanareas_11',
+                opacity: 1,
+                color: 'rgba(177,87,77,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_Urbanareas_11');
+        map.getPane('pane_Urbanareas_11').style.zIndex = 411;
+        map.getPane('pane_Urbanareas_11').style['mix-blend-mode'] = 'normal';
+        var layer_Urbanareas_11 = new L.geoJson(json_Urbanareas_11, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Urbanareas_11',
+            layerName: 'layer_Urbanareas_11',
+            pane: 'pane_Urbanareas_11',
+            onEachFeature: pop_Urbanareas_11,
+            style: style_Urbanareas_11_0,
+        });
+        bounds_group.addLayer(layer_Urbanareas_11);
+        function pop_Patches_12(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">PATCH NUMBER</th>\
+                        <td>' + (feature.properties['PATCH NUM.'] !== null ? autolinker.link(feature.properties['PATCH NUM.'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">STATUS</th>\
+                        <td>' + (feature.properties['STATUS'] !== null ? autolinker.link(feature.properties['STATUS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">FORAGING</th>\
+                        <td>' + (feature.properties['FORAGING'] !== null ? autolinker.link(feature.properties['FORAGING'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_Patches_12_0(feature) {
+            switch(String(feature.properties['STATUS'])) {
+                case 'bare ground':
+                    return {
+                pane: 'pane_Patches_12',
+                opacity: 1,
+                color: 'rgba(99,59,33,1.0)',
+                dashArray: '5.0,1.0',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(67,43,28,0.9019607843137255)',
+                interactive: true,
+            }
+                    break;
+                case 'covered':
+                    return {
+                pane: 'pane_Patches_12',
+                opacity: 1,
+                color: 'rgba(99,59,33,1.0)',
+                dashArray: '5.0,1.0',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(119,108,100,0.9019607843137255)',
+                interactive: true,
+            }
+                    break;
+                case 'maintained vegetation':
+                    return {
+                pane: 'pane_Patches_12',
+                opacity: 1,
+                color: 'rgba(99,59,33,1.0)',
+                dashArray: '5.0,1.0',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(108,66,38,0.9019607843137255)',
+                interactive: true,
+            }
+                    break;
+                case 'spontaneous planting':
+                    return {
+                pane: 'pane_Patches_12',
+                opacity: 1,
+                color: 'rgba(99,59,33,1.0)',
+                dashArray: '5.0,1.0',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(136,86,53,0.9019607843137255)',
+                interactive: true,
+            }
+                    break;
+                case 'spontaneous growth':
+                    return {
+                pane: 'pane_Patches_12',
+                opacity: 1,
+                color: 'rgba(99,59,33,1.0)',
+                dashArray: '5.0,1.0',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(188,122,75,0.9019607843137255)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Patches_12');
+        map.getPane('pane_Patches_12').style.zIndex = 412;
+        map.getPane('pane_Patches_12').style['mix-blend-mode'] = 'normal';
+        var layer_Patches_12 = new L.geoJson(json_Patches_12, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Patches_12',
+            layerName: 'layer_Patches_12',
+            pane: 'pane_Patches_12',
+            onEachFeature: pop_Patches_12,
+            style: style_Patches_12_0,
+        });
+        bounds_group.addLayer(layer_Patches_12);
+        map.addLayer(layer_Patches_12);
+        function pop_Actions_13(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">OCCURENCE</th>\
+                        <td>' + (feature.properties['ACTION NUMBER'] !== null ? autolinker.link(feature.properties['ACTION NUMBER'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ACTION</th>\
+                        <td>' + (feature.properties['ACTION'] !== null ? autolinker.link(feature.properties['ACTION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PHOTO</th>\
+                        <td>' + (feature.properties['PHOTO'] !== null ? '<img src="images/' + String(feature.properties['PHOTO']).replace(/[\\\/:]/g, '_').trim() + '" '+ 'class=popupImage' +'>' : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DESCRIPTION</th>\
+                        <td>' + (feature.properties['DESCRIPTION'] !== null ? autolinker.link(feature.properties['DESCRIPTION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">UPDATE</th>\
+                        <td>' + (feature.properties['UPDATE'] !== null ? autolinker.link(feature.properties['UPDATE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">photo</th>\
+                        <td>' + (feature.properties['updated photo'] !== null ? '<img src="images/' + String(feature.properties['updated photo']).replace(/[\\\/:]/g, '_').trim() + '" '+ 'class=popupImage' +'>' : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_Actions_13_0(feature) {
+            switch(String(feature.properties['ACTION'])) {
+                case 'foraging':
+                    return {
+                pane: 'pane_Actions_13',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(215,92,28,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'cutting':
+                    return {
+                pane: 'pane_Actions_13',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(232,129,59,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'uprooting':
+                    return {
+                pane: 'pane_Actions_13',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(249,165,90,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'removing':
+                    return {
+                pane: 'pane_Actions_13',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(254,200,107,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'fencing':
+                    return {
+                pane: 'pane_Actions_13',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(254,234,120,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'transplanting':
+                    return {
+                pane: 'pane_Actions_13',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(230,245,123,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'planting':
+                    return {
+                pane: 'pane_Actions_13',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(163,219,108,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'propagating':
+                    return {
+                pane: 'pane_Actions_13',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(105,181,88,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'growing':
+                    return {
+                pane: 'pane_Actions_13',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(60,132,61,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'fruiting':
+                    return {
+                pane: 'pane_Actions_13',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(14,82,35,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Actions_13');
+        map.getPane('pane_Actions_13').style.zIndex = 413;
+        map.getPane('pane_Actions_13').style['mix-blend-mode'] = 'normal';
+        var layer_Actions_13 = new L.geoJson(json_Actions_13, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Actions_13',
+            layerName: 'layer_Actions_13',
+            pane: 'pane_Actions_13',
+            onEachFeature: pop_Actions_13,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Actions_13_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Actions_13);
+        map.addLayer(layer_Actions_13);
+            var title = new L.Control();
+            title.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+            };
+            title.update = function () {
+                this._div.innerHTML = '<h2>spontaneous patches</h2>';
+            };
+            title.addTo(map);
+            var abstract = new L.Control({'position':'bottomleft'});
+            abstract.onAdd = function (map) {
+                this._div = L.DomUtil.create('div',
+                'leaflet-control abstract');
+                this._div.id = 'abstract'
+                    this._div.setAttribute("onmouseenter", "abstract.show()");
+                    this._div.setAttribute("onmouseleave", "abstract.hide()");
+                    this.hide();
+                    return this._div;
+                };
+                abstract.hide = function () {
+                    this._div.classList.remove("abstractUncollapsed");
+                    this._div.classList.add("abstract");
+                    this._div.innerHTML = 'i'
+                }
+                abstract.show = function () {
+                    this._div.classList.remove("abstract");
+                    this._div.classList.add("abstractUncollapsed");
+                    this._div.innerHTML = 'INTRO<br />This map is meant as a tool to locate practices that emerge while being situated on patches, offering the possibility to collectively archive them. The patches presented here are pieces of the public green spaces, in Eindhoven, over which spontaneous actions of care are temporarily taking place. Coloured dots are used to locate these actions on the map.<br /><br />NAVIGATION<br />Most <b>dots</b> and  <b>shapes</b> can be clicked to display information. Different <b>layers</b> can be displayed as background via the « layers » tab. The <b>magnifying glass</b> icon can be used to search addresses.<br />Click on the <b>binocular</b>  icon to search a patch number<i>(zoom into the map before pressing search so that you may see the patch’s location ; some of them are very small)</i>.<br /><br />PARTICIPATION<br /><b>If you want to add to the map</b>, use <a href="mailto:210893@student.designacademy.nl?subject=(the%20action%20that%20you%20observed%2C%20ex%3A%20planting%2C%20foraging%2C%20growing%2C%20fruiting)&body=Location%3A%20(an%20address%2C%20location%20or%20GPS%20coordinates)%0A%0ADescription%3A%20(the%20action%20that%20you%20were%20observing%20or%20that%20you%20were%20part%20of%2C%20narrated%20from%20your%20personal%20perspective%2C%20max.%20150%20words)%0A%0A%0A%0A%0A(attach%20a%20photo%20of%20the%20action%20to%20the%20email%20before%20sending)%0A%0A%0A--%0ABy%20sending%20this%20email%20I%20agree%20for%20the%20given%20information%20(excluding%20email%20addresses)%20to%20be%20published%20on%20the%20web%20map.">this email</a> to share the actions that you are observing or initiating in the public green spaces of Eindhoven.<br /><br /><b>If you want to receive monthly news from the patches and know when the next collective action will be happening, <a href="mailto:210893@student.designacademy.nl?subject=newsletter%20subscription&body=Hey%2C%0AI%20would%20like%20to%20subscribe%20to%20the%20newsletter%20!">subscribe to the newsletter</a>.</b><br /><br />';
+            };
+            abstract.addTo(map);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'Actions<br /><table><tr><td style="text-align: center;"><img src="legend/Actions_13_foraging0.png" /></td><td>foraging</td></tr><tr><td style="text-align: center;"><img src="legend/Actions_13_cutting1.png" /></td><td>cutting</td></tr><tr><td style="text-align: center;"><img src="legend/Actions_13_uprooting2.png" /></td><td>uprooting</td></tr><tr><td style="text-align: center;"><img src="legend/Actions_13_removing3.png" /></td><td>removing</td></tr><tr><td style="text-align: center;"><img src="legend/Actions_13_fencing4.png" /></td><td>fencing</td></tr><tr><td style="text-align: center;"><img src="legend/Actions_13_transplanting5.png" /></td><td>transplanting</td></tr><tr><td style="text-align: center;"><img src="legend/Actions_13_planting6.png" /></td><td>planting</td></tr><tr><td style="text-align: center;"><img src="legend/Actions_13_propagating7.png" /></td><td>propagating</td></tr><tr><td style="text-align: center;"><img src="legend/Actions_13_growing8.png" /></td><td>growing</td></tr><tr><td style="text-align: center;"><img src="legend/Actions_13_fruiting9.png" /></td><td>fruiting</td></tr></table>': layer_Actions_13,'Patches<br /><table><tr><td style="text-align: center;"><img src="legend/Patches_12_bareground0.png" /></td><td>bare ground</td></tr><tr><td style="text-align: center;"><img src="legend/Patches_12_covered1.png" /></td><td>covered</td></tr><tr><td style="text-align: center;"><img src="legend/Patches_12_maintainedvegetation2.png" /></td><td>maintained vegetation</td></tr><tr><td style="text-align: center;"><img src="legend/Patches_12_spontaneousplanting3.png" /></td><td>spontaneous planting</td></tr><tr><td style="text-align: center;"><img src="legend/Patches_12_spontaneousgrowth4.png" /></td><td>spontaneous growth</td></tr></table>': layer_Patches_12,'<img src="legend/Urbanareas_11.png" /> Urban areas': layer_Urbanareas_11,'<img src="legend/Playgrounds_10.png" /> Playgrounds': layer_Playgrounds_10,'<img src="legend/Dogwalkingareas_9.png" /> Dog walking areas': layer_Dogwalkingareas_9,'<img src="legend/PublicgreenspaceCentrum_8.png" /> Public green space (Centrum)': layer_PublicgreenspaceCentrum_8,'<img src="legend/PublicgreenspaceStratum_7.png" /> Public green space (Stratum)': layer_PublicgreenspaceStratum_7,'<img src="legend/PublicgreenspaceStrijp_6.png" /> Public green space (Strijp)': layer_PublicgreenspaceStrijp_6,'<img src="legend/PublicgreenspaceWoenselzuid_5.png" /> Public green space (Woensel zuid)': layer_PublicgreenspaceWoenselzuid_5,'<img src="legend/PublicgreenspaceWoenselnoord_4.png" /> Public green space (Woensel noord)': layer_PublicgreenspaceWoenselnoord_4,'<img src="legend/PublicgreenspaceTongelre_3.png" /> Public green space (Tongelre)': layer_PublicgreenspaceTongelre_3,'<img src="legend/PublicgreenspaceGestel_2.png" /> Public green space (Gestel)': layer_PublicgreenspaceGestel_2,"OpenStreetMap view": layer_OpenStreetMapview_1,"Aerial photos": layer_Aerialphotos_0,}).addTo(map);
+        setBounds();
+        map.addControl(new L.Control.Search({
+            layer: layer_Patches_12,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'PATCH NUM.'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+        </script>
+    </body>
+</html>
